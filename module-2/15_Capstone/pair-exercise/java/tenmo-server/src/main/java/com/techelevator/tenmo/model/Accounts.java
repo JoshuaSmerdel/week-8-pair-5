@@ -21,10 +21,10 @@ public class Accounts {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	public BigDecimal getBalanceBigDecimal() {
+	public BigDecimal getBalance() {
 		return balance;
 	}
-	public void setBalanceBigDecimal(BigDecimal balance) {
+	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
 
