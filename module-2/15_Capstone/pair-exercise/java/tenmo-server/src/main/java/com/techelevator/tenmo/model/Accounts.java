@@ -4,22 +4,22 @@ import java.math.BigDecimal;
 
 public class Accounts {
 	
-	private int accountID;
-	private int userID;
+	private int accountId;
+	private int userId;
 	private BigDecimal balance;
 	
 	
-	public int getAccountID() {
-		return accountID;
+	public int getAccountId() {
+		return accountId;
 	}
-	public void setAccountID(int accountID) {
-		this.accountID = accountID;
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
 	}
-	public int getUserID() {
-		return userID;
+	public int getUserId() {
+		return userId;
 	}
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	public BigDecimal getBalance() {
 		return balance;
