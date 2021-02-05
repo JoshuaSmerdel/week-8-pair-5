@@ -35,8 +35,8 @@ public class AccountsSqlDao implements AccountsDAO {
     {
         Accounts accounts = new Accounts();
 
-        accounts.setAccountID(row.getInt("account_id"));
-        accounts.setUserID(row.getInt("user_id"));
+        accounts.setAccountId(row.getInt("account_id"));
+        accounts.setUserId(row.getInt("user_id"));
         accounts.setBalance(row.getBigDecimal("balance"));
         
         return accounts;
