@@ -14,7 +14,7 @@ public class AccountsSqlDao implements AccountsDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Accounts get(BigDecimal balance) {
+    public Accounts getBalance() {
         Accounts accounts = null;
         String sql = "select balance\n" +
                 "from accounts\n" +
@@ -28,7 +28,7 @@ public class AccountsSqlDao implements AccountsDAO {
 
         }
 
-        return accounts.setBalance();
+        return accounts;
 
     }
     private Accounts mapRowToAccount(SqlRowSet row)
@@ -38,6 +38,8 @@ public class AccountsSqlDao implements AccountsDAO {
         accounts.setAccountID(row.getInt("account_id"));
         accounts.setUserID(row.getInt("user_id"));
         accounts.setBalance(row.getBigDecimal("balance"));
+        
+        return accounts;
     }
 
 }
