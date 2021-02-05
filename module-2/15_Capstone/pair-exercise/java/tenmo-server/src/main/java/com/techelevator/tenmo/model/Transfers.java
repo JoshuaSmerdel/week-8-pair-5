@@ -1,4 +1,4 @@
-package com.techelevator.tenmo.controller;
+package com.techelevator.tenmo.model;
 
 import java.math.BigDecimal;
 
