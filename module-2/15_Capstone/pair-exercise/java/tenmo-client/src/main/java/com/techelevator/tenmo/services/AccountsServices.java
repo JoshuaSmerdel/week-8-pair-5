@@ -1,5 +1,9 @@
 package com.techelevator.tenmo.services;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+
 import com.techelevator.tenmo.models.Accounts;
 
 public class AccountsServices extends ApiServiceBase
@@ -13,7 +17,13 @@ public class AccountsServices extends ApiServiceBase
 	public Accounts getBalance()
 	{
 		String url = BASE_URL;
-		Accounts accounts = restTemplate.getForObject(url, Accounts.class);
+		
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(user.getToken());
+        HttpEntity entity = new HttpEntity<>(headers);
+    	Accounts accounts = restTemplate.exchange(url, HttpMethod.GET, entity, Accounts.class).getBody();
+		
+
 		
 		return accounts;
 	}

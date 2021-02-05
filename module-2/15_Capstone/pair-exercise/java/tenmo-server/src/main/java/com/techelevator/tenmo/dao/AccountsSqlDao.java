@@ -14,13 +14,15 @@ public class AccountsSqlDao implements AccountsDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Accounts getBalance() {
+    public Accounts getBalance(int userId) {
         Accounts accounts = null;
-        String sql = "select balance\n" +
-                "from accounts\n" +
+        String sql = "SELECT account_id\r\n" + 
+        		"        ,user_id\r\n" + 
+        		"        ,balance\r\n" + 
+        		"FROM accounts \r\n" +
                 "where user_id = ?;";
 
-        SqlRowSet row = jdbcTemplate.queryForRowSet(sql);
+        SqlRowSet row = jdbcTemplate.queryForRowSet(sql,userId);
 
         if (row.next())
         {
