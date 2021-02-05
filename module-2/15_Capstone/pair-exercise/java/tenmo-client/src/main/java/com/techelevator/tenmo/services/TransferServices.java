@@ -28,4 +28,17 @@ public class TransferServices extends ApiServiceBase {
         return transfers;
     }
 
+    public Transfers listUsers()
+    {
+        String url = BASE_URL;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(user.getToken());
+        HttpEntity entity = new HttpEntity<>(headers);
+        Transfers transfers = restTemplate.exchange(url, HttpMethod.GET, entity, Transfers.class).getBody();
+
+
+
+        return transfers;
+    }
 }
