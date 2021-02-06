@@ -42,7 +42,7 @@ public class TransfersController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping()
-    public Transfers listUsers(){
+    public Transfers listUser(){
     	//may not need to make new method, can possibly use userDAO method list users
         return null;
     }
