@@ -35,21 +35,21 @@ public class AccountsController
 		return accounts;
 	}
 	
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping()
-	public Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
-	{
-		
-		Accounts accounts = dao.getUpdatedBalanceFromSender(userId, amtTransfrd);
-		return accounts;
-	}
-	
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping()
-	public Accounts getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd)
-	{
-		Accounts accounts = dao.getReceiversNewBalance(receiversacctId, amtTransfrd);
-		return accounts;
-	}
+//	@PreAuthorize("isAuthenticated()")
+//	@GetMapping()
+//	public Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
+//	{
+//		
+//		Accounts accounts = dao.getUpdatedBalanceFromSender(userId, amtTransfrd);
+//		return accounts;
+//	}
+//	
+//	@PreAuthorize("isAuthenticated()")
+//	@GetMapping()
+//	public Accounts getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd)
+//	{
+//		Accounts accounts = dao.getReceiversNewBalance(receiversacctId, amtTransfrd);
+//		return accounts;
+//	}
 }
 	
