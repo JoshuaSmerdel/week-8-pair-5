@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.controller;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techelevator.tenmo.dao.AccountsDAO;
+import com.techelevator.tenmo.dao.TransfersDAO;
 import com.techelevator.tenmo.dao.UserDAO;
 import com.techelevator.tenmo.model.Accounts;
 
@@ -20,6 +22,8 @@ public class AccountsController
 	AccountsDAO dao;
 	@Autowired
 	UserDAO userdao;
+	@Autowired
+	TransfersDAO transferdao;
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping()
@@ -29,6 +33,19 @@ public class AccountsController
 		int userId = userdao.findIdByUsername(username);
 		Accounts accounts = dao.getBalance(userId);
 				
+		return accounts;
+	}
+	
+	public Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
+	{
+		
+		Accounts accounts = dao.getUpdatedBalanceFromSender(userId, amtTransfrd);
+		return accounts;
+	}
+	
+	public Accounts getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd)
+	{
+		Accounts accounts = dao.getReceiversNewBalance(receiversacctId, amtTransfrd);
 		return accounts;
 	}
 }
