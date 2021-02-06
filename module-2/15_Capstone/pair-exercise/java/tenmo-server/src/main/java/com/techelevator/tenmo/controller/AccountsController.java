@@ -22,8 +22,7 @@ public class AccountsController
 	AccountsDAO dao;
 	@Autowired
 	UserDAO userdao;
-	@Autowired
-	TransfersDAO transferdao;
+	
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping()
