@@ -1,12 +1,16 @@
 package com.techelevator.tenmo;
 
+import java.math.BigDecimal;
+
 import com.techelevator.tenmo.models.Accounts;
 import com.techelevator.tenmo.models.AuthenticatedUser;
+import com.techelevator.tenmo.models.Transfers;
 import com.techelevator.tenmo.models.UserCredentials;
 import com.techelevator.tenmo.services.AccountsServices;
 import com.techelevator.tenmo.services.ApiServiceBase;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.AuthenticationServiceException;
+import com.techelevator.tenmo.services.TransferServices;
 import com.techelevator.view.ConsoleService;
 
 
@@ -30,7 +34,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     private ConsoleService console;
     private AuthenticationService authenticationService;
     public AccountsServices accountsServices = new AccountsServices(API_BASE_URL);
-
+    public TransferServices transferServices = new TransferServices(API_BASE_URL);
+    
     public static void main(String[] args) {
     	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL));
     	app.run();
@@ -89,6 +94,12 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void sendBucks() {
+		//Once user list is corrected in transferservices need to call on that function here too
+		Transfers transfers = transferServices.sendBucks();
+//		int receiversacctId = transfers.getAccountTo();
+//		BigDecimal amtTransfrd = transfers.getTransferAmount();
+//		Accounts account = accountsServices.getUpdatedBalanceFromSender(int userId, amtTransfrd);
+//		Accounts account1 = accountsServices.getReceiversNewBalance(receiversacctId, amtTransfrd);
 		// TODO Auto-generated method stub
 		
 	}
