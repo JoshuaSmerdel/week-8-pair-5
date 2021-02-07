@@ -19,7 +19,7 @@ public class TransfersSqlDAO implements TransfersDAO
 
 	private JdbcTemplate jdbcTemplate;
 
-	
+	@Override
 	public Transfers sendBucks(int accountFrom, int accountTo, BigDecimal transferAmount)
 	{
 		Transfers transfers = null;
@@ -30,7 +30,7 @@ public class TransfersSqlDAO implements TransfersDAO
 		String transfersql = "BEGIN TRANSACTION; "
 				+ ""
 				+ "INSERT INTO transfers (transfer_id,transfer_type_id, transfer_status_id, account_from, account_to, amount)\r\n" + 
-				"VALUES (2, 2, ?, ?, ?); "
+				"VALUES (?, 2, 2, ?, ?, ?); "
 				+ ""
 				+ "UPDATE accounts\\r\\n\" + \r\n" 
 				+"	   		\"SET balance = balance - ?\\r\\n\" + \r\n" 
@@ -38,7 +38,7 @@ public class TransfersSqlDAO implements TransfersDAO
 				+ ""
 				+ "UPDATE accounts\\r\\n\" + \r\n"  
 				+"	   		\"SET balance = balance + ?\\r\\n\" + \r\n"
-				+"	   		\"WHERE account_id = ?;"
+				+"	   		\"WHERE user_id = ?;"
 				+ "COMMIT;";
 		jdbcTemplate.update(transfersql, transferId, accountFrom, accountTo,transferAmount, transferAmount, accountFrom, transferAmount, accountTo);
 		
@@ -47,29 +47,29 @@ public class TransfersSqlDAO implements TransfersDAO
 														
 
 	
-	public List<User> listUser(int userId)
-	
-	{
-		List<User> users = new ArrayList<User>();
-		
-		String sql = "SELECT t.*, u.username AS userFrom, v.username AS userTo FROM transfers t  \r\n" + 
-				"			INNER JOIN accounts a ON t.account_from = a.account_id  \r\n" + 
-				"			INNER JOIN accounts b ON t.account_to = b.account_id  \r\n" + 
-				"			INNER JOIN users u ON a.user_id = u.user_id  \r\n" + 
-				"			INNERJOIN users v ON b.user_id = v.user_id  \r\n" + 
-				"				WHERE a.user_id = ? OR b.user_id = ?;";
-		
-		SqlRowSet transferUsers = jdbcTemplate.queryForRowSet(sql, userId, userId);
-		
-		while(transferUsers.next())
-		{
-			Transfers transfer = mapRowToTransfers(transferUsers);
-			//users.add(transfer);
-		}
-		 
-		return users;
-		
-	}
+//	public List<User> listUser(int userId)
+//	
+//	{
+//		List<User> users = new ArrayList<User>();
+//		
+//		String sql = "SELECT t.*, u.username AS userFrom, v.username AS userTo FROM transfers t  \r\n" + 
+//				"			INNER JOIN accounts a ON t.account_from = a.account_id  \r\n" + 
+//				"			INNER JOIN accounts b ON t.account_to = b.account_id  \r\n" + 
+//				"			INNER JOIN users u ON a.user_id = u.user_id  \r\n" + 
+//				"			INNERJOIN users v ON b.user_id = v.user_id  \r\n" + 
+//				"				WHERE a.user_id = ? OR b.user_id = ?;";
+//		
+//		SqlRowSet transferUsers = jdbcTemplate.queryForRowSet(sql, userId, userId);
+//		
+//		while(transferUsers.next())
+//		{
+//			Transfers transfer = mapRowToTransfers(transferUsers);
+//			//users.add(transfer);
+//		}
+//		 
+//		return users;
+//		
+//	}
 	
 	
 	private int getNextTransferId()
@@ -103,9 +103,11 @@ public class TransfersSqlDAO implements TransfersDAO
 
 
 	
-	public List<User> listUser() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> listUser() 
+	{
+		List<User> users = new ArrayList<User>();
+		
+		return users;
 	}
 
 
