@@ -1,7 +1,9 @@
 package com.techelevator.tenmo;
 
+import java.util.Arrays;
 import java.util.List;
 import java.math.BigDecimal;
+import java.util.Scanner;
 
 import com.techelevator.tenmo.models.Accounts;
 import com.techelevator.tenmo.models.AuthenticatedUser;
@@ -14,6 +16,7 @@ import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.AuthenticationServiceException;
 import com.techelevator.tenmo.services.TransferServices;
 import com.techelevator.view.ConsoleService;
+import org.springframework.web.client.RestTemplate;
 
 
 public class App {
@@ -31,10 +34,12 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private static final String MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS = "View your pending requests";
 	private static final String MAIN_MENU_OPTION_LOGIN = "Login as different user";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_VIEW_BALANCE, MAIN_MENU_OPTION_SEND_BUCKS, MAIN_MENU_OPTION_VIEW_PAST_TRANSFERS, MAIN_MENU_OPTION_REQUEST_BUCKS, MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS, MAIN_MENU_OPTION_LOGIN, MENU_OPTION_EXIT };
-	
-    private AuthenticatedUser currentUser;
-    private ConsoleService console;
-    private AuthenticationService authenticationService;
+	private Scanner scanner = new Scanner(System.in);
+	private AuthenticatedUser currentUser;
+	private ConsoleService console;
+	private AuthenticationService authenticationService;
+	private RestTemplate apiCall = new RestTemplate();
+
 //    public AccountsServices accountsServices = new AccountsServices(API_BASE_URL);
 //    public TransferServices transferServices = new TransferServices(API_BASE_URL);
     
@@ -46,13 +51,15 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     public App(ConsoleService console, AuthenticationService authenticationService) {
 		this.console = console;
 		this.authenticationService = authenticationService;
+
 	}
 
 	public void run() {
 //		System.out.println("*********************");
 //		System.out.println("* Welcome to TEnmo! *");
 //		System.out.println("*********************");
-		System.out.println("████████╗███████╗███╗░░██╗███╗░░░███╗░█████╗░\n" +
+		System.out.println
+				("████████╗███████╗███╗░░██╗███╗░░░███╗░█████╗░\n" +
 				 "╚══██╔══╝██╔════╝████╗░██║████╗░████║██╔══██╗\n" +
 				 "░░░██║░░░█████╗░░██╔██╗██║██╔████╔██║██║░░██║\n" +
 				 "░░░██║░░░██╔══╝░░██║╚████║██║╚██╔╝██║██║░░██║\n" +
@@ -97,7 +104,83 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
+		System.out.println("________________________________________________________________");
+		System.out.println();
+    	System.out.println("Enter (1) view transaction history.");
+		System.out.println("Enter (2) view transaction details.");
+		System.out.println("________________________________________________________________");
+
+		String oneOrTwo = scanner.nextLine();
+		int usersChoice = 0;
+		usersChoice = Integer.parseInt(oneOrTwo);
+
+		if (usersChoice == 1) {
+			try {
+				ResponseEntity<transfers[]> transferListFrom = apiCall
+						.getForEntity(API_BASE_URL + "transfers/" + currentUser.getUser().getId(), transfers[].class);
+				List<transfers> listAllTransfersFrom = Arrays.asList(transferListFrom.getBody());
+
+				ResponseEntity<transfers[]> transferListTo = apiCall.getForEntity(
+						API_BASE_URL + "transfers/user_to/" + currentUser.getUser().getId(), transfers[].class);
+				List<transfers> listAllTransfersTo = Arrays.asList(transferListTo.getBody());
+				System.out.println("Listing all transfers: ------------------");
+
+				User user = new User();
+				accounts account = new accounts();
+				// list all transfers from current user to another user
+				if (listAllTransfersTo.size() > 0) {
+					for (transfers to : listAllTransfersTo) {
+						account = getAcctById(to.getAccount_from());
+						user = getUserById(account.getUser_id());
+						System.out.println("From " + user.getUsername() + "       Amount: " + to.getAmount());
+					}
+				} // list all transactions from another user to current user
+				if (listAllTransfersFrom.size() > 0) {
+					for (transfers t : listAllTransfersFrom) {
+						account = getAcctById(t.getAccount_to());
+						user = getUserById(account.getUser_id());
+						System.out.println("To " + user.getUsername() + "         Amount: " + t.getAmount());
+					}
+				}
+			} catch (NullPointerException ex) {
+				System.out.println("Null Pointer Error.");
+			}
+		}
+
+		if (usersChoice == 2) {
+			System.out.println("Enter the ID of the transfer you want to see details for: ");
+			String userIdChoice = scanner.nextLine();
+			int transfer_id = Integer.parseInt(userIdChoice);
+
+			try {
+				transfers detailsTransfer = apiCall.getForObject(API_BASE_URL + "/transfers/details/" + transfer_id,
+						transfers.class);
+
+				User userNameTo = apiCall
+						.getForObject(API_BASE_URL + "users/account/" + detailsTransfer.getAccount_to(), User.class);
+				User userNameFrom = apiCall
+						.getForObject(API_BASE_URL + "users/account/" + detailsTransfer.getAccount_from(), User.class);
+
+				System.out.println("Details for transfer " + transfer_id);
+				System.out.println("       ***        ");
+				System.out.println("Transfer ID: " + detailsTransfer.getTransfer_id());
+				System.out.println("Account to: " + userNameTo.getUsername());
+				System.out.println("Account from: " + userNameFrom.getUsername());
+				if (detailsTransfer.getTransfer_type_id() == 1) {
+					System.out.println("Transfer type ID: " + "Received");
+				} else if (detailsTransfer.getTransfer_type_id() == 2) {
+					System.out.println("Transfer type ID: " + "Sent");
+				}
+				System.out.println("Transfer status ID:  Success");
+				System.out.println("Amount: " + detailsTransfer.getAmount());
+			} catch (NullPointerException ex) {
+				System.out.println("Null Pointer Exception - transfer ID does not exist. Try again.");
+				return;
+			}
+		} else if (usersChoice != 1 || usersChoice != 2) {
+			return;
+		}
+	}
 		
 	}
 
