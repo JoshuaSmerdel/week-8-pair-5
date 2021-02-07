@@ -26,7 +26,7 @@ public class TransfersSqlDAO implements TransfersDAO
 		// get  the next transfer_id
 		int transferId = getNextTransferId();
 
-		// build the Treansfer object
+		// TODO build the Transfer object
 		String transfersql = "BEGIN TRANSACTION; "
 				+ ""
 				+ "INSERT INTO transfers (transfer_id,transfer_type_id, transfer_status_id, account_from, account_to, amount)\r\n" + 
