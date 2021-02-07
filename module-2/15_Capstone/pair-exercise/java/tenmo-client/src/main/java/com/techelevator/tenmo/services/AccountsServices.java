@@ -33,6 +33,7 @@ public class AccountsServices extends ApiServiceBase
 	public Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
 	{
 		String url = BASE_URL;
+		BigDecimal balance = new BigDecimal(0);
 		
     	Accounts accounts = restTemplate.exchange(url, HttpMethod.GET, makeEntity(), Accounts.class).getBody();
 		

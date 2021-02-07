@@ -39,25 +39,7 @@ public class AccountsSqlDao implements AccountsDAO {
 
     }
     
-   public void getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
-   {//function should pass in user id and transfer amount - not sure how to pass in function
-	   
-	   String senderbalsql = "UPDATE accounts\r\n" + 
-	   		"SET balance = balance - ?\r\n" + 
-	   		"WHERE user_id = ?;";
-	   jdbcTemplate.update(senderbalsql,amtTransfrd, userId);
-	   
-	   
-   }
    
-   public void getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd)
-   {
-	   String receiverbalsql = "UPDATE accounts\r\n" + 
-	   		"SET balance = balance + ?\r\n" + 
-	   		"WHERE account_id = ?;";
-	   jdbcTemplate.update(receiverbalsql,amtTransfrd, receiversacctId);
-	   
-   }
     private Accounts mapRowToAccount(SqlRowSet row)
     {
         Accounts accounts = new Accounts();

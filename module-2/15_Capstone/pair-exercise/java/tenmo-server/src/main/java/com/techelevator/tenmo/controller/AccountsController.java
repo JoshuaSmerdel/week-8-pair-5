@@ -29,28 +29,11 @@ public class AccountsController
 	@GetMapping("balance/{userId}")
 	public BigDecimal getBalance(@PathVariable int userId)
 	{
-//		String username = principal.getName();
-//		int userId = userdao.findIdByUsername(username);
+
 		BigDecimal balance = dao.getBalance(userId);
 				
 		return balance;
 	}
 	
-//	@PreAuthorize("isAuthenticated()")
-////	@GetMapping()
-//	public Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
-//	{
-//		
-//		Accounts accounts = dao.getUpdatedBalanceFromSender(userId, amtTransfrd);
-//		return accounts;
-//	}
-//	
-//	@PreAuthorize("isAuthenticated()")
-////	@GetMapping()
-//	public Accounts getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd)
-//	{
-//		Accounts accounts = dao.getReceiversNewBalance(receiversacctId, amtTransfrd);
-//		return accounts;
-//	}
 }
 	

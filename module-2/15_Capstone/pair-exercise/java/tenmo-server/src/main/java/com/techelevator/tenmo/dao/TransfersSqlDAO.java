@@ -23,14 +23,28 @@ public class TransfersSqlDAO implements TransfersDAO
 	public Transfers sendBucks(int accountFrom, int accountTo, BigDecimal transferAmount)
 	{
 		Transfers transfers = null;
-		Accounts accounts = null;
-		String transfersql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount)\r\n" + 
-				"VALUES (2, 2, ?, ?, ?);";
-		jdbcTemplate.update(transfersql, accountFrom, accountTo,transferAmount);
+		// get  the next transfer_id
+		int transferId = getNextTransferId();
+
+		// build the Treansfer object
+		String transfersql = "BEGIN TRANSACTION; "
+				+ ""
+				+ "INSERT INTO transfers (transfer_id,transfer_type_id, transfer_status_id, account_from, account_to, amount)\r\n" + 
+				"VALUES (2, 2, ?, ?, ?); "
+				+ ""
+				+ "UPDATE accounts\\r\\n\" + \r\n" 
+				+"	   		\"SET balance = balance - ?\\r\\n\" + \r\n" 
+				+"	   		\"WHERE user_id = ?;"
+				+ ""
+				+ "UPDATE accounts\\r\\n\" + \r\n"  
+				+"	   		\"SET balance = balance + ?\\r\\n\" + \r\n"
+				+"	   		\"WHERE account_id = ?;"
+				+ "COMMIT;";
+		jdbcTemplate.update(transfersql, transferId, accountFrom, accountTo,transferAmount, transferAmount, accountFrom, transferAmount, accountTo);
 		
-		return null;
+		return transfers;
 	}
-	
+														
 
 	
 	public List<User> listUser()
@@ -41,6 +55,19 @@ public class TransfersSqlDAO implements TransfersDAO
 		return users;
 		
 	}
+	
+	private int getNextTransferId()
+    {
+        String sql = "SELECT nextval('seq_transfer_id') AS transfer_id;";
+
+        SqlRowSet row = jdbcTemplate.queryForRowSet(sql);
+        if (row.next())
+        {
+            return row.getInt("transfer_id");
+        }
+
+        throw new RuntimeException("TransferId could not be generated.");
+    }
 	
 	private Transfers mapRowToTransfers(SqlRowSet row)
 	{

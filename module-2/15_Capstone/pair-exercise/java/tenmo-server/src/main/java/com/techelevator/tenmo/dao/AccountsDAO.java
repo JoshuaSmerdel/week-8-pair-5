@@ -9,7 +9,5 @@ public interface AccountsDAO
 
 	BigDecimal getBalance(int userId);
 	
-	void getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd);
 	
-	void getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd);
 }

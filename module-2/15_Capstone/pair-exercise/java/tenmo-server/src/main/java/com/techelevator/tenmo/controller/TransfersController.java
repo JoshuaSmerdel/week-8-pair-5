@@ -40,10 +40,7 @@ public class TransfersController {
 		}
 		
 		return dao.sendBucks(transfers.getAccountFrom(), transfers.getAccountTo(), transfers.getTransferAmount());//sendBucks function passes in account from, account
-		//to and transferamount information. if I include that in my function, how do I incorporate
-		//in line 32 above - that's why line 40 is red
-		//**those arguments have been passed through in the function in both the 
-		//TransfersSqlDAO and TransfersDAO
+		
     }
 
     @PreAuthorize("isAuthenticated()")
