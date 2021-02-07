@@ -115,7 +115,9 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			System.out.println(user.getId() + " " + user.getUsername());
 			
 		}
-		System.out.println("Please choose an option");
+		
+		console.getUserId();
+		console.getUserInputInteger(MAIN_MENU_OPTION_SEND_BUCKS);
 		
 		
 		

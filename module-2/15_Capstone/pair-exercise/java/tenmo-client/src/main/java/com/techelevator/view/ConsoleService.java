@@ -73,4 +73,15 @@ public class ConsoleService {
 		} while(result == null);
 		return result;
 	}
+	
+	public String getUserId()
+	{
+		
+		out.println("\nPlease select a user id to transfer funds to: ");
+		out.flush();
+		
+		return in.nextLine();	
+	}
+
 }
+
