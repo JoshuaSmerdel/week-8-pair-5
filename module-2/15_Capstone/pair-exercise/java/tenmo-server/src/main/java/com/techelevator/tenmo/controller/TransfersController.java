@@ -44,11 +44,11 @@ public class TransfersController {
 		{
 			throw new RuntimeException("Invalid Account");
 		}
-		else if (enoughToTransfer == true)
+		else if (enoughToTransfer != true)
 		{
-			return dao.sendBucks(transfers.getAccountFrom(), transfers.getAccountTo(), transfers.getTransferAmount());
+			throw new RuntimeException ("Insufficient Funds");	
 		}
-		throw new RuntimeException ("Insufficient Funds");
+		return dao.sendBucks(transfers.getAccountFrom(), transfers.getAccountTo(), transfers.getTransferAmount());
 		
 		
     }
