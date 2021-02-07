@@ -41,7 +41,7 @@ public class TransfersSqlDAO implements TransfersDAO
 				+"	   		\"WHERE user_id = ?;"
 				+ "COMMIT;";
 		jdbcTemplate.update(transfersql, transferId, accountFrom, accountTo,transferAmount, transferAmount, accountFrom, transferAmount, accountTo);
-		if(transferAmount > )
+		
 		return transfers;
 	}
 														
