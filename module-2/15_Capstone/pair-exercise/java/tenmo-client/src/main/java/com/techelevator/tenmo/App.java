@@ -97,84 +97,85 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewTransferHistory() {
-		System.out.println("________________________________________________________________");
-		System.out.println();
-    	System.out.println("Enter (1) view transaction history.");
-		System.out.println("Enter (2) view transaction details.");
-		System.out.println("________________________________________________________________");
-
-		String oneOrTwo = scanner.nextLine();
-		int usersChoice = 0;
-		usersChoice = Integer.parseInt(oneOrTwo);
-
-		if (usersChoice == 1) {
-			try {
-				ResponseEntity<transfers[]> transferListFrom = apiCall
-						.getForEntity(API_BASE_URL + "transfers/" + currentUser.getUser().getId(), transfers[].class);
-				List<transfers> listAllTransfersFrom = Arrays.asList(transferListFrom.getBody());
-
-				ResponseEntity<transfers[]> transferListTo = apiCall.getForEntity(
-						API_BASE_URL + "transfers/user_to/" + currentUser.getUser().getId(), transfers[].class);
-				List<transfers> listAllTransfersTo = Arrays.asList(transferListTo.getBody());
-				System.out.println("Listing all transfers: ------------------");
-
-				User user = new User();
-				Accounts account = new Accounts();
-				// list all transfers from current user to another user
-				if (listAllTransfersTo.size() > 0) {
-					for (transfers to : listAllTransfersTo) {
-						account = getAcctById(to.getAccount_from());
-						user = getUserById(account.getUser_id());
-						System.out.println("From " + user.getUsername() + "       Amount: " + to.getAmount());
-					}
-				} // list all transactions from another user to current user
-				if (listAllTransfersFrom.size() > 0) {
-					for (transfers t : listAllTransfersFrom) {
-						account = getAcctById(t.getAccount_to());
-						user = getUserById(account.getUser_id());
-						System.out.println("To " + user.getUsername() + "         Amount: " + t.getAmount());
-					}
-				}
-			} catch (NullPointerException ex) {
-				System.out.println("Null Pointer Error.");
-			}
-		}
-
-		if (usersChoice == 2) {
-			System.out.println("Enter the ID of the transfer you want to see details for: ");
-			String userIdChoice = scanner.nextLine();
-			int transfer_id = Integer.parseInt(userIdChoice);
-
-			try {
-				transfers detailsTransfer = apiCall.getForObject(API_BASE_URL + "/transfers/details/" + transfer_id,
-						transfers.class);
-
-				User userNameTo = apiCall
-						.getForObject(API_BASE_URL + "users/account/" + detailsTransfer.getAccount_to(), User.class);
-				User userNameFrom = apiCall
-						.getForObject(API_BASE_URL + "users/account/" + detailsTransfer.getAccount_from(), User.class);
-
-				System.out.println("Details for transfer " + transfer_id);
-				System.out.println("       ***        ");
-				System.out.println("Transfer ID: " + detailsTransfer.getTransfer_id());
-				System.out.println("Account to: " + userNameTo.getUsername());
-				System.out.println("Account from: " + userNameFrom.getUsername());
-				if (detailsTransfer.getTransfer_type_id() == 1) {
-					System.out.println("Transfer type ID: " + "Received");
-				} else if (detailsTransfer.getTransfer_type_id() == 2) {
-					System.out.println("Transfer type ID: " + "Sent");
-				}
-				System.out.println("Transfer status ID:  Success");
-				System.out.println("Amount: " + detailsTransfer.getAmount());
-			} catch (NullPointerException ex) {
-				System.out.println("Null Pointer Exception - transfer ID does not exist. Try again.");
-				return;
-			}
-		} else if (usersChoice != 1 || usersChoice != 2) {
-			return;
-		}
-	}
-		
+//		System.out.println("________________________________________________________________");
+//		System.out.println();
+//    	System.out.println("Enter (1) view transaction history.");
+//		System.out.println("Enter (2) view transaction details.");
+//		System.out.println("________________________________________________________________");
+//
+//		String oneOrTwo = scanner.nextLine();
+//		int usersChoice = 0;
+//		usersChoice = Integer.parseInt(oneOrTwo);
+//
+//		if (usersChoice == 1) {
+//			try {
+//				ResponseEntity<transfers[]> transferListFrom = apiCall
+//						.getForEntity(API_BASE_URL + "transfers/" + currentUser.getUser().getId(), transfers[].class);
+//				List<transfers> listAllTransfersFrom = Arrays.asList(transferListFrom.getBody());
+//
+//				ResponseEntity<transfers[]> transferListTo = apiCall.getForEntity(
+//						API_BASE_URL + "transfers/user_to/" + currentUser.getUser().getId(), transfers[].class);
+//				List<transfers> listAllTransfersTo = Arrays.asList(transferListTo.getBody());
+//				System.out.println("Listing all transfers: ------------------");
+//
+//				User user = new User();
+//				Accounts account = new Accounts();
+//				// list all transfers from current user to another user
+//				if (listAllTransfersTo.size() > 0) {
+//					for (transfers to : listAllTransfersTo) {
+//						account = getAcctById(to.getAccount_from());
+//						user = getUserById(account.getUser_id());
+//						System.out.println("From " + user.getUsername() + "       Amount: " + to.getAmount());
+//					}
+//				} // list all transactions from another user to current user
+//				if (listAllTransfersFrom.size() > 0) {
+//					for (transfers t : listAllTransfersFrom) {
+//						account = getAcctById(t.getAccount_to());
+//						user = getUserById(account.getUser_id());
+//						System.out.println("To " + user.getUsername() + "         Amount: " + t.getAmount());
+//					}
+//				}
+//			} catch (NullPointerException ex) {
+//				System.out.println("Null Pointer Error.");
+//			}
+//		}
+//
+//		if (usersChoice == 2) {
+//			System.out.println("Enter the ID of the transfer you want to see details for: ");
+//			String userIdChoice = scanner.nextLine();
+//			int transfer_id = Integer.parseInt(userIdChoice);
+//
+//			try {
+//				transfers detailsTransfer = apiCall.getForObject(API_BASE_URL + "/transfers/details/" + transfer_id,
+//						transfers.class);
+//
+//				User userNameTo = apiCall
+//						.getForObject(API_BASE_URL + "users/account/" + detailsTransfer.getAccount_to(), User.class);
+//				User userNameFrom = apiCall
+//						.getForObject(API_BASE_URL + "users/account/" + detailsTransfer.getAccount_from(), User.class);
+//
+//				System.out.println("Details for transfer " + transfer_id);
+//				System.out.println("       ***        ");
+//				System.out.println("Transfer ID: " + detailsTransfer.getTransfer_id());
+//				System.out.println("Account to: " + userNameTo.getUsername());
+//				System.out.println("Account from: " + userNameFrom.getUsername());
+//				if (detailsTransfer.getTransfer_type_id() == 1) {
+//					System.out.println("Transfer type ID: " + "Received");
+//				} else if (detailsTransfer.getTransfer_type_id() == 2) {
+//					System.out.println("Transfer type ID: " + "Sent");
+//				}
+//				System.out.println("Transfer status ID:  Success");
+//				System.out.println("Amount: " + detailsTransfer.getAmount());
+//			} catch (NullPointerException ex) {
+//				System.out.println("Null Pointer Exception - transfer ID does not exist. Try again.");
+//				return;
+//			}
+//		} else if (usersChoice != 1 || usersChoice != 2) {
+//			return;
+//		}
+//	}
+//	
+		System.out.println("placeholder for transferhistory stuff");
 	}
 
 	private void viewPendingRequests() {
@@ -260,7 +261,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 //	}
 
 //		----------------- START MAJR CODE --------------------------------
-//		Once user list is corrected in transferservices need to call on that function here too
+
 		TransferServices transferServices = new TransferServices(API_BASE_URL, currentUser);
 		List<User> users = transferServices.listUser();
 		for(User user:users)
@@ -269,15 +270,22 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 		}
 
-		console.getUserId();
-		console.getUserInputInteger(MAIN_MENU_OPTION_SEND_BUCKS);
+//		console.getUserId();
+//		console.getUserInputInteger(MAIN_MENU_OPTION_SEND_BUCKS);
+		System.out.println("Please enter the id of the user you want to send money to: ");
+		String userChoice = scanner.nextLine();
 
-
-
-		Transfers transfers = transferServices.sendBucks();
-
-		int receiversacctId = transfers.getAccountTo();
-		BigDecimal amtTransfrd = transfers.getTransferAmount();
+		int receiversacctId = 0;
+		Transfers transfers = new Transfers();
+		receiversacctId = transfers.getAccountTo();
+		
+		System.out.println("Enter amount to transfer: ");
+		String userInput = scanner.nextLine();
+		BigDecimal amtTransfrd = new BigDecimal(0);
+		amtTransfrd = transfers.getTransferAmount();
+		transferServices.sendBucks();
+		
+		
 //		Accounts account = accountsServices.getUpdatedBalanceFromSender(int userId, amtTransfrd);
 //		Accounts account1 = accountsServices.getReceiversNewBalance(receiversacctId, amtTransfrd);
 //		 TODO Auto-generated method stub
