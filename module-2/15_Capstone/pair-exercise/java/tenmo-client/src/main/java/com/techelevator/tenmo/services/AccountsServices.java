@@ -7,37 +7,34 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 
 import com.techelevator.tenmo.models.Accounts;
+import com.techelevator.tenmo.models.AuthenticatedUser;
 
 public class AccountsServices extends ApiServiceBase
 {
-	public AccountsServices(String url)
+	private AuthenticatedUser currentUser;
+	public AccountsServices(String url, AuthenticatedUser currentUser)
 	{
+		
 		super(url);
-		this.BASE_URL = url + "accounts";
+		this.BASE_URL = url;
+		this.currentUser = currentUser;
 	}
 	
-	public Accounts getBalance()
+	public BigDecimal getBalance()
 	{
 		String url = BASE_URL;
+		BigDecimal balance = new BigDecimal(0);
+	
+    	balance = restTemplate.exchange(url + "accounts/balance/" + currentUser.getUser().getId(), HttpMethod.GET, makeEntity(), BigDecimal.class).getBody();
 		
-		HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(user.getToken());
-        HttpEntity entity = new HttpEntity<>(headers);
-    	Accounts accounts = restTemplate.exchange(url, HttpMethod.GET, entity, Accounts.class).getBody();
-		
-
-		
-		return accounts;
+		return balance;
 	}
 	
 	public Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
 	{
 		String url = BASE_URL;
 		
-		HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(user.getToken());
-        HttpEntity entity = new HttpEntity<>(headers);
-    	Accounts accounts = restTemplate.exchange(url, HttpMethod.GET, entity, Accounts.class).getBody();
+    	Accounts accounts = restTemplate.exchange(url, HttpMethod.GET, makeEntity(), Accounts.class).getBody();
 		
 		return accounts;
 	}
@@ -53,4 +50,12 @@ public class AccountsServices extends ApiServiceBase
 		
 		return accounts;
 	}
+	private HttpEntity makeEntity()
+	{
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(currentUser.getToken());
+        HttpEntity entity = new HttpEntity<>(headers);
+        return entity;
+	}
+	
 }

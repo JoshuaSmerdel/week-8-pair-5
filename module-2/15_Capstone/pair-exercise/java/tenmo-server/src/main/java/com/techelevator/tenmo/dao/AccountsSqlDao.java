@@ -16,7 +16,7 @@ public class AccountsSqlDao implements AccountsDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Accounts getBalance(int userId) 
+    public BigDecimal getBalance(int userId) 
     {
         Accounts accounts = null;
         String sql = "SELECT account_id\r\n" + 
@@ -25,43 +25,38 @@ public class AccountsSqlDao implements AccountsDAO {
         		"FROM accounts \r\n" +
                 "where user_id = ?;";
 
-        SqlRowSet row = jdbcTemplate.queryForRowSet(sql,userId);
+        SqlRowSet rows = jdbcTemplate.queryForRowSet(sql,userId);
 
-        if (row.next())
+        while (rows.next())
         {
-            accounts = mapRowToAccount(row);
+            BigDecimal balance = rows.getBigDecimal("balance");
+            
+            return balance;
 
         }
 
-        return accounts;
+        return null;
 
     }
     
-   public Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
+   public void getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
    {//function should pass in user id and transfer amount - not sure how to pass in function
-	   Accounts accounts = null;
-	   Transfers transfers = null;
-	   amtTransfrd = transfers.getTransferAmount();
+	   
 	   String senderbalsql = "UPDATE accounts\r\n" + 
 	   		"SET balance = balance - ?\r\n" + 
 	   		"WHERE user_id = ?;";
-	   jdbcTemplate.update(senderbalsql,userId,amtTransfrd);
+	   jdbcTemplate.update(senderbalsql,amtTransfrd, userId);
 	   
-	   return accounts;
+	   
    }
    
-   public Accounts getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd)
+   public void getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd)
    {
-	   Accounts accounts = null;
-	   Transfers transfers = null;
-	   receiversacctId = transfers.getAccountTo();
-	   amtTransfrd = transfers.getTransferAmount();
 	   String receiverbalsql = "UPDATE accounts\r\n" + 
 	   		"SET balance = balance + ?\r\n" + 
 	   		"WHERE account_id = ?;";
-	   jdbcTemplate.update(receiverbalsql,receiversacctId,amtTransfrd);
+	   jdbcTemplate.update(receiverbalsql,amtTransfrd, receiversacctId);
 	   
-	   return accounts;
    }
     private Accounts mapRowToAccount(SqlRowSet row)
     {

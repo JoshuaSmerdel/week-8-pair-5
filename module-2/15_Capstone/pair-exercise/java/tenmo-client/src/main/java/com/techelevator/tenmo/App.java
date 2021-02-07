@@ -1,10 +1,12 @@
 package com.techelevator.tenmo;
 
+import java.util.List;
 import java.math.BigDecimal;
 
 import com.techelevator.tenmo.models.Accounts;
 import com.techelevator.tenmo.models.AuthenticatedUser;
 import com.techelevator.tenmo.models.Transfers;
+import com.techelevator.tenmo.models.User;
 import com.techelevator.tenmo.models.UserCredentials;
 import com.techelevator.tenmo.services.AccountsServices;
 import com.techelevator.tenmo.services.ApiServiceBase;
@@ -33,8 +35,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     private AuthenticatedUser currentUser;
     private ConsoleService console;
     private AuthenticationService authenticationService;
-    public AccountsServices accountsServices = new AccountsServices(API_BASE_URL);
-    public TransferServices transferServices = new TransferServices(API_BASE_URL);
+//    public AccountsServices accountsServices = new AccountsServices(API_BASE_URL);
+//    public TransferServices transferServices = new TransferServices(API_BASE_URL);
     
     public static void main(String[] args) {
     	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL));
@@ -78,8 +80,9 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewCurrentBalance() {
-		Accounts account = accountsServices.getBalance();
-		System.out.println(account.getBalance());
+		AccountsServices accountsServices = new AccountsServices(API_BASE_URL, currentUser);
+		BigDecimal balance = accountsServices.getBalance();
+		System.out.println(balance);
 		
 	}
 
@@ -95,7 +98,20 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void sendBucks() {
 		//Once user list is corrected in transferservices need to call on that function here too
-		Transfers transfers = transferServices.sendBucks();
+		TransferServices transferServices = new TransferServices(API_BASE_URL, currentUser);
+		List<User> users = transferServices.listUser();
+		for(User user:users)
+		{
+			System.out.println(user.getId() + " " + user.getUsername());
+//			System.out.println();
+//			System.out.println();
+//			System.out.println("Please select the userId you would like to send money to:");
+//			System.out.println();
+			
+		}
+		
+		//Transfers transfers = transferServices.sendBucks();
+		
 //		int receiversacctId = transfers.getAccountTo();
 //		BigDecimal amtTransfrd = transfers.getTransferAmount();
 //		Accounts account = accountsServices.getUpdatedBalanceFromSender(int userId, amtTransfrd);

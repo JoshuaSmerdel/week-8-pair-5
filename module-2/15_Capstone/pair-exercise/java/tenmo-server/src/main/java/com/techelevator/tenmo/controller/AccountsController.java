@@ -6,6 +6,7 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,7 @@ import com.techelevator.tenmo.dao.UserDAO;
 import com.techelevator.tenmo.model.Accounts;
 
 @RestController
-@RequestMapping(path="/accounts")
+@RequestMapping(path="accounts/")
 public class AccountsController
 {
 	@Autowired
@@ -25,31 +26,31 @@ public class AccountsController
 	
 
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping()
-	public Accounts getBalance(Principal principal)
+	@GetMapping("balance/{userId}")
+	public BigDecimal getBalance(@PathVariable int userId)
 	{
-		String username = principal.getName();
-		int userId = userdao.findIdByUsername(username);
-		Accounts accounts = dao.getBalance(userId);
+//		String username = principal.getName();
+//		int userId = userdao.findIdByUsername(username);
+		BigDecimal balance = dao.getBalance(userId);
 				
-		return accounts;
+		return balance;
 	}
 	
-	@PreAuthorize("isAuthenticated()")
-//	@GetMapping()
-	public Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
-	{
-		
-		Accounts accounts = dao.getUpdatedBalanceFromSender(userId, amtTransfrd);
-		return accounts;
-	}
-	
-	@PreAuthorize("isAuthenticated()")
-//	@GetMapping()
-	public Accounts getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd)
-	{
-		Accounts accounts = dao.getReceiversNewBalance(receiversacctId, amtTransfrd);
-		return accounts;
-	}
+//	@PreAuthorize("isAuthenticated()")
+////	@GetMapping()
+//	public Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd)
+//	{
+//		
+//		Accounts accounts = dao.getUpdatedBalanceFromSender(userId, amtTransfrd);
+//		return accounts;
+//	}
+//	
+//	@PreAuthorize("isAuthenticated()")
+////	@GetMapping()
+//	public Accounts getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd)
+//	{
+//		Accounts accounts = dao.getReceiversNewBalance(receiversacctId, amtTransfrd);
+//		return accounts;
+//	}
 }
 	

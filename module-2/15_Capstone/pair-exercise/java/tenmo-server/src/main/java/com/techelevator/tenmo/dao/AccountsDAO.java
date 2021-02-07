@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 public interface AccountsDAO 
 {
 
-	Accounts getBalance(int userId);
+	BigDecimal getBalance(int userId);
 	
-	Accounts getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd);
+	void getUpdatedBalanceFromSender(int userId,BigDecimal amtTransfrd);
 	
-	Accounts getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd);
+	void getReceiversNewBalance(int receiversacctId,BigDecimal amtTransfrd);
 }
