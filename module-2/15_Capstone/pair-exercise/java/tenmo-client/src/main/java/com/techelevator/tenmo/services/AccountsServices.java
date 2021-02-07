@@ -6,7 +6,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 
-import com.techelevator.tenmo.models.Accounts;
 import com.techelevator.tenmo.models.AuthenticatedUser;
 
 public class AccountsServices extends ApiServiceBase
