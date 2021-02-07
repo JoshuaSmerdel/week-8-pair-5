@@ -103,12 +103,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		for(User user:users)
 		{
 			System.out.println(user.getId() + " " + user.getUsername());
-//			System.out.println();
-//			System.out.println();
-//			System.out.println("Please select the userId you would like to send money to:");
-//			System.out.println();
 			
 		}
+		System.out.println("Please choose an option");
+		
+		
 		
 		//Transfers transfers = transferServices.sendBucks();
 		
