@@ -10,5 +10,7 @@ public interface TransfersDAO
 {
 	Transfers sendBucks(int accountFrom, int accountTo, BigDecimal transferAmount);
 	
-	List<User> listUser();
+	List<User> listUser(int userId);
+	
+	
 }
