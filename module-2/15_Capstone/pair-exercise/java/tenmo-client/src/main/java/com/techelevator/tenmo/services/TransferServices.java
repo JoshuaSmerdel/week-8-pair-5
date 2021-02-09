@@ -31,7 +31,7 @@ private AuthenticatedUser currentUser;
         HttpEntity entity = new HttpEntity<Transfers>(transfers, headers);
         
         
-        Transfers newTransfers = restTemplate.postForObject(url + "transfers", entity, Transfers.class);//add url + transfers
+        Transfers newTransfers = restTemplate.postForObject(url + "transfers", entity, Transfers.class);
 
 
 
