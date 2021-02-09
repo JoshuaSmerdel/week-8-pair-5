@@ -92,6 +92,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private void viewCurrentBalance() {
 		AccountsServices accountsServices = new AccountsServices(API_BASE_URL, currentUser);
 		BigDecimal balance = accountsServices.getBalance();
+		System.out.println("Your current balance is:");
 		System.out.println(balance);
 		
 	}
