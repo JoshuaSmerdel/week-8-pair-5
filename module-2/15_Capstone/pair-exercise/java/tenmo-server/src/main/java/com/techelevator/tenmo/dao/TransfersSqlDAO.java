@@ -16,32 +16,46 @@ import com.techelevator.tenmo.model.User;
 public class TransfersSqlDAO implements TransfersDAO
 
 {
-
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
 	public Transfers sendBucks(int accountFrom, int accountTo, BigDecimal transferAmount)
 	{
 		Transfers transfers = null;
-		// get  the next transfer_id
-		int transferId = getNextTransferId();
-
-		// TODO build the Transfer object
-		String transfersql = "BEGIN TRANSACTION; "
-				+ ""
-				+ "INSERT INTO transfers (transfer_id,transfer_type_id, transfer_status_id, account_from, account_to, amount)\r\n" + 
-				"VALUES (?, 2, 2, ?, ?, ?); "
-				+ ""
-				+ "UPDATE accounts\\r\\n\" + \r\n" 
-				+"	   		\"SET balance = balance - ?\\r\\n\" + \r\n" 
-				+"	   		\"WHERE user_id = ?;"
-				+ ""
-				+ "UPDATE accounts\\r\\n\" + \r\n"  
-				+"	   		\"SET balance = balance + ?\\r\\n\" + \r\n"
-				+"	   		\"WHERE user_id = ?;"
-				+ "COMMIT;";
-		jdbcTemplate.update(transfersql, transferId, accountFrom, accountTo,transferAmount, transferAmount, accountFrom, transferAmount, accountTo);
-		
+		try
+		{
+			// get  the next transfer_id
+			int transferId = getNextTransferId();
+	
+			// TODO build the Transfer object
+			String transfersql = "BEGIN TRANSACTION; "
+					+ ""
+					+ "INSERT INTO transfers (transfer_id,transfer_type_id, transfer_status_id, account_from, account_to, amount)\r\n" + 
+					"VALUES (?, 2, 2, ?, ?, ?);\r\n "
+					+ "\r\n"
+					+ "UPDATE accounts\r\n" 
+					+"SET balance = balance - ?\r\n"
+					+"WHERE user_id = ?;\r\n"
+					+ "\r\n"
+					+ "UPDATE accounts\r\n"
+					+"SET balance = balance + ?\r\n"
+					+"WHERE user_id = ?;\r\n"
+					+ "COMMIT;";
+			jdbcTemplate.update(transfersql, transferId, accountFrom, accountTo,transferAmount, transferAmount, accountFrom, transferAmount, accountTo);
+			
+			transfers = new Transfers();
+			transfers.setTransferId(transferId);
+			transfers.setTransferStatusId(2);
+			transfers.setAccountFrom(accountFrom);
+			transfers.setAccountTo(accountTo);
+			transfers.setTransferTypeId(2);
+			transfers.setTransferAmount(transferAmount);
+		}
+		catch(Exception ex)
+		{
+			System.err.println(ex.getMessage());
+		}
 		return transfers;
 	}
 														

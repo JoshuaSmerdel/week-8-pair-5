@@ -34,7 +34,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private RestTemplate apiCall = new RestTemplate();
 
 //    public AccountsServices accountsServices = new AccountsServices(API_BASE_URL);
-//    public TransferServices transferServices = new TransferServices(API_BASE_URL);
+//   public TransferServices transferServices = new TransferServices(API_BASE_URL);
     
     public static void main(String[] args) {
     	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL));
@@ -276,15 +276,19 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		System.out.println("Please enter the id of the user you want to send money to: ");
 		String userChoice = scanner.nextLine();
 
-		int receiversacctId = 0;
+		int receiversacctId = Integer.parseInt(userChoice);
 		Transfers transfers = new Transfers();
-		receiversacctId = transfers.getAccountTo();
 		
 		System.out.println("Enter amount to transfer: ");
 		String userInput = scanner.nextLine();
-		BigDecimal amtTransfrd = new BigDecimal(0);
-		amtTransfrd = transfers.getTransferAmount();
-		transferServices.sendBucks();
+		BigDecimal amtTransfrd = new BigDecimal(userInput);
+
+		
+		transfers.setAccountFrom(currentUser.getUser().getId());
+		transfers.setAccountTo(receiversacctId);
+		transfers.setTransferAmount(amtTransfrd);
+		
+		transferServices.sendBucks(transfers);
 		
 		
 //		Accounts account = accountsServices.getUpdatedBalanceFromSender(int userId, amtTransfrd);

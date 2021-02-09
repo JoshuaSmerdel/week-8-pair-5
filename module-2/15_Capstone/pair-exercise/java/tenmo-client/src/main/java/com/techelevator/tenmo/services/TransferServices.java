@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 
 import com.techelevator.tenmo.models.AuthenticatedUser;
 import com.techelevator.tenmo.models.Transfers;
@@ -20,18 +21,21 @@ private AuthenticatedUser currentUser;
         this.currentUser = currentUser;
     }
 
-    public Transfers sendBucks()
+    public Transfers sendBucks(Transfers transfers)
     {
         String url = BASE_URL;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(user.getToken());
-        HttpEntity entity = new HttpEntity<Transfers>(headers);
-        Transfers transfers = restTemplate.postForObject(url, entity, Transfers.class);//add url + transfers
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity<Transfers>(transfers, headers);
+        
+        
+        Transfers newTransfers = restTemplate.postForObject(url + "transfers", entity, Transfers.class);//add url + transfers
 
 
 
-        return transfers;
+        return newTransfers;
     }
 
     public List<User> listUser()
