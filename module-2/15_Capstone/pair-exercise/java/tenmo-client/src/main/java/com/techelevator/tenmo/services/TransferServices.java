@@ -48,6 +48,16 @@ private AuthenticatedUser currentUser;
         return users;
     }
     
+//    public List<Transfers> listTransfers()
+//    {
+//    	List<Transfers> transfers;
+//    	String url = BASE_URL;
+//    	
+//    	Transfers[] transfersArray = restTemplate.patchForObject( url + "transfers", request, responseType, uriVariables)
+//    	listAllTransfers = Arrays.asList((transferArray);
+//    	returns transfers;
+//    }
+    
     private HttpEntity makeEntity()
 	{
 		HttpHeaders headers = new HttpHeaders();
