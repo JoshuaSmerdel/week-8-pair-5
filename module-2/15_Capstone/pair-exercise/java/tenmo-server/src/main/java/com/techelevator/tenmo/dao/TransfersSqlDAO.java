@@ -59,31 +59,14 @@ public class TransfersSqlDAO implements TransfersDAO
 		return transfers;
 	}
 														
-
 	
-//	public List<User> listUser(int userId)
-//	
-//	{
-//		List<User> users = new ArrayList<User>();
-//		
-//		String sql = "SELECT t.*, u.username AS userFrom, v.username AS userTo FROM transfers t  \r\n" + 
-//				"			INNER JOIN accounts a ON t.account_from = a.account_id  \r\n" + 
-//				"			INNER JOIN accounts b ON t.account_to = b.account_id  \r\n" + 
-//				"			INNER JOIN users u ON a.user_id = u.user_id  \r\n" + 
-//				"			INNERJOIN users v ON b.user_id = v.user_id  \r\n" + 
-//				"				WHERE a.user_id = ? OR b.user_id = ?;";
-//		
-//		SqlRowSet transferUsers = jdbcTemplate.queryForRowSet(sql, userId, userId);
-//		
-//		while(transferUsers.next())
-//		{
-//			Transfers transfer = mapRowToTransfers(transferUsers);
-//			//users.add(transfer);
-//		}
-//		 
-//		return users;
-//		
-//	}
+	public List<User> listUser() 
+	{
+		List<User> users = new ArrayList<User>();
+		
+		return users;
+	}
+
 	
 	
 	private int getNextTransferId()
@@ -98,6 +81,9 @@ public class TransfersSqlDAO implements TransfersDAO
 
         throw new RuntimeException("TransferId could not be generated.");
     }
+	
+	
+	
 	
 	private Transfers mapRowToTransfers(SqlRowSet row)
 	{
@@ -117,12 +103,6 @@ public class TransfersSqlDAO implements TransfersDAO
 
 
 	
-	public List<User> listUser() 
-	{
-		List<User> users = new ArrayList<User>();
-		
-		return users;
-	}
 
 
 
