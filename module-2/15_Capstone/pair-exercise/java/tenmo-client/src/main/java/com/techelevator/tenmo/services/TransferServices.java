@@ -48,14 +48,20 @@ private AuthenticatedUser currentUser;
         return users;
     }
     
-//    public List<Transfers> listTransfers()
+//    public List<Transfers> listTransfers(Transfers transfers)
 //    {
-//    	List<Transfers> transfers;
+//    	List<Transfers> transfersList;
 //    	String url = BASE_URL;
+    
+// 		HttpHeaders headers = new HttpHeaders();
+//    	headers.setBearerAuth(user.getToken());
+//    	headers.setContentType(MediaType.APPLICATION_JSON);
+//    	HttpEntity entity = new HttpEntity<Transfers>(transfers, headers);
+       
 //    	
-//    	Transfers[] transfersArray = restTemplate.patchForObject( url + "transfers", request, responseType, uriVariables)
+//    	Transfers[] transfersArray = restTemplate.postForObject( url + "transfers", request, responseType, uriVariables)
 //    	listAllTransfers = Arrays.asList((transferArray);
-//    	returns transfers;
+//    	returns listAllTransfers;
 //    }
     
     private HttpEntity makeEntity()
