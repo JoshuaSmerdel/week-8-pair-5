@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,11 +54,24 @@ public class TransfersController {
 		
     }
 
+//    @PreAuthorize("isAuthenticated()")
+//    @GetMapping()
+//    public List<User> listUser(){
+//    	
+//        return userdao.findAll();
+//    }
+    
     @PreAuthorize("isAuthenticated()")
-    @GetMapping()
-    public List<User> listUser(){
-    	
-        return userdao.findAll();
+    @GetMapping("/{accountId}")
+    public List<Transfers> byUser(@PathVariable int accountId)
+    {
+    	return dao.listTransfers(accountId);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping()
+    public List<Transfers> listTransfers(int accountId)
+    {
+    	return dao.listTransfers(accountId);
+    }
 }

@@ -67,7 +67,30 @@ public class TransfersSqlDAO implements TransfersDAO
 		return users;
 	}
 
-	
+	public List<Transfers> listTransfers(int accountId)
+	{
+		List<Transfers> transfersList = new ArrayList<Transfers>();
+		
+		String sql = "SELECT t.transfer_id, t.account_from, t.account_to, t.amount, t.transfer_type_id, t.transfer_status_id, tt.transfer_type_desc, ts.transfer_status_desc \r\n" + 
+				" FROM transfers AS t\r\n" + 
+				" JOIN transfer_types AS tt\r\n" + 
+				"        ON t.transfer_type_id = tt.transfer_type_id\r\n" + 
+				" JOIN transfer_statuses AS ts\r\n" + 
+				"        ON t.transfer_status_id = ts.transfer_status_id\r\n" + 
+				" WHERE t.account_from = ?\r\n" + 
+				" OR t.account_to = ?; ";
+		
+		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, accountId, accountId);
+		
+		while(row.next())
+		{
+		
+		Transfers transfer = mapRowToTransfers(row);
+		transfersList.add(transfer);
+		}
+		
+		return transfersList;
+	}
 	
 	private int getNextTransferId()
     {

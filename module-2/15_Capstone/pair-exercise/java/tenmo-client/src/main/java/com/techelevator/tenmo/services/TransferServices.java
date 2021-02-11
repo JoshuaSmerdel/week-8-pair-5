@@ -48,21 +48,28 @@ private AuthenticatedUser currentUser;
         return users;
     }
     
-//    public List<Transfers> listTransfers(Transfers transfers)
-//    {
-//    	List<Transfers> transfersList;
-//    	String url = BASE_URL;
-    
-// 		HttpHeaders headers = new HttpHeaders();
-//    	headers.setBearerAuth(user.getToken());
-//    	headers.setContentType(MediaType.APPLICATION_JSON);
-//    	HttpEntity entity = new HttpEntity<Transfers>(transfers, headers);
+    public List<Transfers> listTransfers(Transfers transfers)
+    {
+    	List<Transfers> transfersList;
+    	String url = BASE_URL;
+     	HttpHeaders headers = new HttpHeaders();
+    	headers.setBearerAuth(user.getToken());
+    	headers.setContentType(MediaType.APPLICATION_JSON);
+    	HttpEntity entity = new HttpEntity<Transfers>(transfers, headers);
        
-//    	
-//    	Transfers[] transfersArray = restTemplate.postForObject( url + "transfers", request, responseType, uriVariables)
-//    	listAllTransfers = Arrays.asList((transferArray);
-//    	returns listAllTransfers;
-//    }
+    	
+    	Transfers[] transfersArray = restTemplate.exchange(url + "transfers", HttpMethod.GET, entity, Transfers[].class).getBody();
+    	transfersList = Arrays.asList(transfersArray);
+    	return transfersList;
+    }
+    
+    public List<Transfers> byId(int accountId)
+    {
+    	
+    	Transfers[] byId = restTemplate.exchange(BASE_URL + "transfers/" + accountId, HttpMethod.GET, makeEntity(), Transfers[].class).getBody();
+    	
+    	return Arrays.asList(byId);
+    }
     
     private HttpEntity makeEntity()
 	{

@@ -34,7 +34,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private RestTemplate apiCall = new RestTemplate();
 
 //    public AccountsServices accountsServices = new AccountsServices(API_BASE_URL);
-//   public TransferServices transferServices = new TransferServices(API_BASE_URL);
+    public TransferServices transferServices; // = new TransferServices(API_BASE_URL);
     
     public static void main(String[] args) {
     	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL));
@@ -98,85 +98,19 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewTransferHistory() {
-//		System.out.println("________________________________________________________________");
-//		System.out.println();
-//    	System.out.println("Enter (1) view transaction history.");
-//		System.out.println("Enter (2) view transaction details.");
-//		System.out.println("________________________________________________________________");
-//
-//		String oneOrTwo = scanner.nextLine();
-//		int usersChoice = 0;
-//		usersChoice = Integer.parseInt(oneOrTwo);
-//
-//		if (usersChoice == 1) {
-//			try {
-//				ResponseEntity<transfers[]> transferListFrom = apiCall
-//						.getForEntity(API_BASE_URL + "transfers/" + currentUser.getUser().getId(), transfers[].class);
-//				List<transfers> listAllTransfersFrom = Arrays.asList(transferListFrom.getBody());
-//
-//				ResponseEntity<transfers[]> transferListTo = apiCall.getForEntity(
-//						API_BASE_URL + "transfers/user_to/" + currentUser.getUser().getId(), transfers[].class);
-//				List<transfers> listAllTransfersTo = Arrays.asList(transferListTo.getBody());
-//				System.out.println("Listing all transfers: ------------------");
-//
-//				User user = new User();
-//				Accounts account = new Accounts();
-//				// list all transfers from current user to another user
-//				if (listAllTransfersTo.size() > 0) {
-//					for (transfers to : listAllTransfersTo) {
-//						account = getAcctById(to.getAccount_from());
-//						user = getUserById(account.getUser_id());
-//						System.out.println("From " + user.getUsername() + "       Amount: " + to.getAmount());
-//					}
-//				} // list all transactions from another user to current user
-//				if (listAllTransfersFrom.size() > 0) {
-//					for (transfers t : listAllTransfersFrom) {
-//						account = getAcctById(t.getAccount_to());
-//						user = getUserById(account.getUser_id());
-//						System.out.println("To " + user.getUsername() + "         Amount: " + t.getAmount());
-//					}
-//				}
-//			} catch (NullPointerException ex) {
-//				System.out.println("Null Pointer Error.");
-//			}
-//		}
-//
-//		if (usersChoice == 2) {
-//			System.out.println("Enter the ID of the transfer you want to see details for: ");
-//			String userIdChoice = scanner.nextLine();
-//			int transfer_id = Integer.parseInt(userIdChoice);
-//
-//			try {
-//				transfers detailsTransfer = apiCall.getForObject(API_BASE_URL + "/transfers/details/" + transfer_id,
-//						transfers.class);
-//
-//				User userNameTo = apiCall
-//						.getForObject(API_BASE_URL + "users/account/" + detailsTransfer.getAccount_to(), User.class);
-//				User userNameFrom = apiCall
-//						.getForObject(API_BASE_URL + "users/account/" + detailsTransfer.getAccount_from(), User.class);
-//
-//				System.out.println("Details for transfer " + transfer_id);
-//				System.out.println("       ***        ");
-//				System.out.println("Transfer ID: " + detailsTransfer.getTransfer_id());
-//				System.out.println("Account to: " + userNameTo.getUsername());
-//				System.out.println("Account from: " + userNameFrom.getUsername());
-//				if (detailsTransfer.getTransfer_type_id() == 1) {
-//					System.out.println("Transfer type ID: " + "Received");
-//				} else if (detailsTransfer.getTransfer_type_id() == 2) {
-//					System.out.println("Transfer type ID: " + "Sent");
-//				}
-//				System.out.println("Transfer status ID:  Success");
-//				System.out.println("Amount: " + detailsTransfer.getAmount());
-//			} catch (NullPointerException ex) {
-//				System.out.println("Null Pointer Exception - transfer ID does not exist. Try again.");
-//				return;
-//			}
-//		} else if (usersChoice != 1 || usersChoice != 2) {
-//			return;
-//		}
-//	}
-//	
-		System.out.println("placeholder for transferhistory stuff");
+
+	List<Transfers> transferHistory = transferServices.byId(currentUser.getUser().getId());
+		for(Transfers transfersById: transferHistory)
+		{
+			System.out.println("Transfer ID = " + transfersById.getTransferId());
+			System.out.println("Account From = " + transfersById.getAccountFrom());
+			System.out.println("Transfer Status = " + transfersById.getTransferStatusDesc());
+			System.out.println("Account To = " + transfersById.getAccountTo());
+			System.out.println("Transfer Amount = " + transfersById.getTransferAmount());
+			
+		}
+		
+		
 	}
 
 	private void viewPendingRequests() {
@@ -186,84 +120,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void sendBucks() {
 
-//		ResponseEntity<User[]> users = apiCall.getForEntity(API_BASE_URL + "users", User[].class);
-//		List<User> listAllUsers = Arrays.asList(users.getBody());
-//		System.out.println("Listing all users: ---------------------");
-//		if (listAllUsers.size() > 0) {
-//			for (User listUser : listAllUsers) {
-//				System.out.println(listUser.getId() + " - " + listUser.getUsername());
-//			}
-//		} else {
-//			System.out.println("Error");
-//		}
-//
-//		System.out.println("Please enter the id of the user you want to send money to: ");
-//		String userChoice = scanner.nextLine();
-//
-//		int userId = 0;
-//		try {
-//			userId = Integer.parseInt(userChoice);
-//		} catch (NumberFormatException ex) {
-//			System.out.println("Error: Enter a valid id number.");
-//			return;
-//		}
-//		if (userId == currentUser.getUser().getId()) {
-//			System.out.println("You cannot transfer money to yourself... try again.");
-//			return;
-//		}
-//		for (User user : listAllUsers) {
-//			if (user.getId() == userId) {
-//				System.out.println("Enter amount to transfer: ");
-//				String userInput = scanner.nextLine();
-//				double cashToTransfer = 0.00;
-//
-//				try {
-//					cashToTransfer = Double.parseDouble(userInput);
-//					String rounding = String.format("%.2f", cashToTransfer);
-//					cashToTransfer = Double.parseDouble(rounding);
-//				} catch (NumberFormatException ex) {
-//					System.out.println("Error, please try again - incorrect dollar amount.");
-//					return;
-//				}
-//
-//				Accounts fromAccount = apiCall.getForObject(API_BASE_URL + "accounts/" + currentUser.getUser().getId(),
-//						Accounts.class);
-//				Accounts toAccount = apiCall.getForObject(API_BASE_URL + "accounts/" + user.getId(), Accounts.class);
-//
-//				if (cashToTransfer > fromAccount.getBalance()) {
-//					System.out.println("Sorry, not enough money in account to transfer.");
-//					return;
-//				} else if (cashToTransfer <= 0) {
-//					System.out.println("Sorry, you cannot transfer debt.");
-//					return;
-//				}
-//
-//				fromAccount.setBalance(fromAccount.getBalance() - cashToTransfer);
-//				toAccount.setBalance(toAccount.getBalance() + cashToTransfer);
-//
-//				apiCall.put(API_BASE_URL + "accounts/" + fromAccount.getAccount_id(), fromAccount);
-//				apiCall.put(API_BASE_URL + "accounts/" + toAccount.getAccount_id(), toAccount);
-//
-//				transfers transferringFunds = new transfers();
-//
-//				transferringFunds.setTransfer_type_id(2);
-//				transferringFunds.setTransfer_status_id(2);
-//				transferringFunds.setAccount_to(toAccount.getAccount_id());
-//				transferringFunds.setAccount_from(fromAccount.getAccount_id());
-//				transferringFunds.setAmount(cashToTransfer);
-//
-//				apiCall.put(API_BASE_URL + "transfers/", transferringFunds);
-//
-//				System.out.println("Transfer status: approved.");
-//				System.out.println("          *******         ");
-//				System.out.println("Your current balance is " + fromAccount.getBalance());
-//			}
-//		}
-//	}
+
 
 //		----------------- START MAJR CODE --------------------------------
 
-		TransferServices transferServices = new TransferServices(API_BASE_URL, currentUser);
+		//TransferServices transferServices = new TransferServices(API_BASE_URL, currentUser);
 		List<User> users = transferServices.listUser();
 		for(User user:users)
 		{
@@ -271,8 +132,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 		}
 
-//		console.getUserId();
-//		console.getUserInputInteger(MAIN_MENU_OPTION_SEND_BUCKS);
+
 		System.out.println("Please enter the id of the user you want to send money to: ");
 		String userChoice = scanner.nextLine();
 
@@ -290,10 +150,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		
 		transferServices.sendBucks(transfers);
 		
-		
-//		Accounts account = accountsServices.getUpdatedBalanceFromSender(int userId, amtTransfrd);
-//		Accounts account1 = accountsServices.getReceiversNewBalance(receiversacctId, amtTransfrd);
-//		 TODO Auto-generated method stub
 
 	}
 
@@ -350,6 +206,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		    try {
 				currentUser = authenticationService.login(credentials);
 				ApiServiceBase.setUser(currentUser);
+				transferServices = new TransferServices(API_BASE_URL, currentUser);
 			} catch (AuthenticationServiceException e) {
 				System.out.println("LOGIN ERROR: "+e.getMessage());
 				System.out.println("Please attempt to login again.");

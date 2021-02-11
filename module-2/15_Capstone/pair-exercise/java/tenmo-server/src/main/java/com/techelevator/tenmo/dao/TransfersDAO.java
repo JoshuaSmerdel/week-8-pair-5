@@ -12,5 +12,7 @@ public interface TransfersDAO
 	
 	List<User> listUser();
 	
+	List<Transfers> listTransfers(int accountId);
+	
 	
 }
